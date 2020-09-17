@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<HEAD>
+<TITLE>Info on M13</TITLE>
+</HEAD>
+
+<BODY>
+
+<H2>M<SUB>13</SUB></H2>
+
+A puzzle by J. H. Conway based on PG(2,3),<BR>
+brought to life by S. Egner, 1997.
+
+<H3>The puzzle...</H3>
+
+In a recent paper, 
+John H. Conway describes the beautiful construction of a discrete
+mathematical structure which he calls <NOBR>"M<SUB>13</SUB>".</NOBR>
+This structure is a <EM>set</EM> of 1235520 permutations of 13 letters.
+It is not a group.
+However, this structure represents the answer to
+the following group theoretic question:<BR>
+Why do the simple groups 
+<NOBR><A HREF="http://for.mat.bham.ac.uk/atlas/M12.html">M<SUB>12</SUB></A></NOBR>
+and 
+<NOBR><A HREF="http://for.mat.bham.ac.uk/atlas/L33.html">L<SUB>3</SUB>(3)</A></NOBR>
+share some subgroup structure?<BR>
+<P>
+
+In fact, both the Mathieu group <NOBR>M<SUB>12</SUB></NOBR> and the
+automorphism group <NOBR>L<SUB>3</SUB>(3)</NOBR> of the projective plane 
+<NOBR>PG(2,3)</NOBR> over <NOBR>GF(3)</NOBR> can be found as subsets of 
+<NOBR>M<SUB>13</SUB>.</NOBR>
+In addition, <NOBR>M<SUB>13</SUB></NOBR> is 6-fold transitive, in the
+sense that it contains enough permutations to map any
+two 6-tuples made from the thirteen letters into each other.
+In this sense, <NOBR>M<SUB>13</SUB></NOBR> could pass as 
+a parent for both <NOBR>M<SUB>12</SUB></NOBR> and <NOBR>L<SUB>3</SUB>(3).</NOBR>
+As it is known from the classification of primitive
+groups that there is no finite <EM>group</EM> which 
+qualifies as a parent in this sense.
+Yet, <NOBR>M<SUB>13</SUB></NOBR> comes close to being a group.
+<P>
+
+To understand the definition of <NOBR>M<SUB>13</SUB></NOBR> let 
+us have a look at the projective geometry <NOBR>PG(2,3).</NOBR>
+This structure can be thought of as the set of one-dimensional
+subspaces of the 3-dimensional vector space <NOBR>GF(3)<SUP>3.</SUP></NOBR>
+There are thirteen such one-dimensional spaces, say 
+<NOBR>PG(2,3)</NOBR> = 
+  {<NOBR>GF(3) u<SUB>1</SUB></NOBR>, .., <NOBR>GF(3) u<SUB>13</SUB></NOBR>}.
+These objects are called the <EM>points</EM> of the 
+geometry <NOBR>PG(2,3).</NOBR>
+Now we form certain sets of points which we
+call the <EM>lines</EM> of the geometry.
+To do this take a non-zero v in <NOBR>GF(3)<SUP>3</SUP></NOBR>
+and form the set 
+<NOBR>L<SUB>v</SUB></NOBR> = <NOBR>{ GF(3) u in PG(2,3) | u . v = 0 }.</NOBR>
+There are thirteen lines,
+  {<NOBR>L<SUB>1</SUB></NOBR>, .., <NOBR>L<SUB>13</SUB></NOBR>},
+each of which contains four points.
+The points and the lines and the "is-contained-in" relation form 
+an <EM>incidence structure</EM> over <NOBR>PG(2,3).</NOBR>
+This incidence structure forms the basis of the puzzle:
+
+<CENTER><IMG SRC="pg23.gif"></CENTER><BR>
+
+The tick marks around the circle represent the 
+26 objects of the incidence structure: 
+13 <EM>points</EM> and 13 <EM>lines</EM>.
+The <EM>points</EM> are indicated as small disks, 
+the <EM>lines</EM> are indicated as small strokes.
+There is an edge from a <EM>line</EM> to a <EM>point</EM>
+if and only if the <EM>point</EM> is an 
+element of the <EM>line</EM>,
+in the sense of the projective geometry <NOBR>PG(2,3).</NOBR>
+<P>
+
+The puzzle M<SUB>13</SUB> now works as follows:
+Place twelve counters labeled "1", .., "12" onto
+twelve of the <EM>points</EM>.
+The last <EM>point</EM> remains free, 
+it carries the "hole".
+An elementary move consists of three steps:
+<OL>
+<LI> Move a counter along an edge to a <EM>line</EM>.
+<LI> From there move the counter to the unoccupied <EM>point</EM>.
+<LI> Finally, exchange the two counters which occupy the other two
+     <EM>points</EM> of the same <EM>line</EM>.
+</OL>
+Hence, any elementary move takes a counter into
+the hole and simulataneously exchanges two other
+counters, specified by the incidence structure
+of the projective geometry <NOBR>PG(2,3).</NOBR>
+
+The structure <NOBR>M<SUB>13</SUB></NOBR> is the set
+of all states of the puzzle which are reachable by
+elementary moves from a fixed initial state.
+Hence, <NOBR>M<SUB>13</SUB></NOBR> is a set of permutations 
+of twelve counters and a hole. 
+Taken as a puzzle, the aim is to restore
+the initial state from a given one with a sequence
+of elementary moves.
+In this sense, the puzzle is much like the
+famous 
+<A HREF="http://www.cut-the-knot.com/pythagoras/fifteen.html">15-puzzle</A>
+by Sam Loyd.
+
+<H3>...the Java Applet</H3>
+
+The Java Applet class M13 is an interactive implementation
+of the abstract puzzle defined by J. H. Conway.
+Clicking on the coloured counters will move them
+into the hole. 
+The speed of the motion can be controlled with the
+slider below.
+In addition, there are four buttons:
+<UL>
+<LI> "Scramble" does about 1000..2000 pseudo random
+     moves to place the puzzle into an unpredictable state.
+<LI> "Reset" restores the initial state instantaneously.
+<LI> "Stop" ends the current move immediately.
+<LI> "Solve" performs a sequence of moves which
+     eventually restore the initial state.
+</UL>
+The source code of the applet consists of 1.5k lines
+of Java-code,
+a third of which implements the visual appearance,
+another third implements the dynamics and
+the remaining third provides the "solve" function.
+<P>
+The most interesting part of the code is the
+solution alogorithm.
+Since <NOBR>M<SUB>13</SUB></NOBR> contains about
+1.2M states it would have been possible to store 
+an optimal solution for each of them:
+For any state only the first move of the solution 
+must be stored and
+a move fits into 4 bits.
+This leaves us with a hypothetical hash
+table of 600k bytes.
+The implementation here does <EM>not</EM> 
+follow this brute force approach.
+<P>
+
+Instead, the structure of the
+<NOBR>M<SUB>13</SUB></NOBR> 
+is being used.
+The set <NOBR>M<SUB>13</SUB></NOBR> contains
+13.12.11.10.9.8 = 1235520 permutations of
+13 letters.
+This set is the disjoint union of 13 cosets
+of the group <NOBR>M<SUB>12</SUB></NOBR>
+of order 12.11.10.9.8 = 95040 in the 
+group <NOBR>S<SUB>13</SUB>.</NOBR>
+Every coset is characterized as the set
+of states where the "hole" is 
+at a fixed <EM>point</EM>.
+A single move can take the hole to 
+any other <EM>point</EM>,
+so the cosets are connected by
+words (in the elementary moves)
+of length one.
+In addition, there are 12.(12-3) = 108
+words of the form "x y x", 
+called <EM>triangle moves</EM>,
+which render the hole where it was before.
+Here, x and y are the labels of the
+counters to move into the hole.
+Since "x y x" and "y x y" have identical
+effect, the triangle moves produce 
+108/2 = 54 permutations which generate
+<NOBR>M<SUB>12</SUB></NOBR>.
+Thus, the problem of solving
+<NOBR>M<SUB>13</SUB></NOBR> has
+been reduced to 
+1. moving the hole to its initial position
+with a single elementary move and
+2. finding a word in the possible 
+54 triangle moves to permute the twelve
+counters.
+<P>
+
+The second step of the solution algorithm
+is a standard task in computational 
+group theory: 
+Given a finite set S of permutations and
+an element x of the permutation group 
+generated by S,
+factorize x into a word in S.
+In our case, S is the set of permutations
+induced by the 54 triangle moves and
+x is the permutation necessary to sort
+the 12 counters into their 
+initial position.
+The standard method to solve this 
+"permutation group element factorization problem"
+is to use an abstract stabilizer chain.
+<P>
+
+The abstract stabilizer chain which is used
+in the Java program has been computed with a 
+program by Sebastian Egner and Markus Püschel
+written in 1996.
+The program is implemented in
+<A HREF="http://www-groups.dcs.st-and.ac.uk/~gap/">GAP v3.4</A>.
+It used 4 hours of computing time on a
+SUN UltraSPARC station to find a heuristically
+good base, a stabilizer chain, and an abstract
+stabilizer chain containing short words.
+Here is a summary of the abstract stabilizer chain
+as produced by the program of SE and MP:
+<PRE><TT>
+ASC(
+# level basepoint cosets  (orbit size) (max. length) (avg. length)
+#     1        12     12           12+             1           0.9
+#     2         2     11           11+             2           1.0
+#     3         9     10           10+             2           1.3
+#     4         7      9            9+             3           1.8
+#     5        13      8            8+             4           2.8
+#
+# total:              50           50*            12           7.9
+#    (orbits: + = complete, * = generating set known)
+)
+</TT></PRE>
+The (max. length) column contains the length of the largest
+word for a transversal element on that level.
+The (avg. length) reports the arithmetic average of the
+lengths of all words for the transversal elements chosen.
+This information shows an upper bound of 1+3*12 = 37
+elementary moves to solve <NOBR>M<SUB>13</SUB>.</NOBR>
+Using heuristic improvements we arrive at about 2/3 of the
+avg. length, giving 16 elementary moves in nearly all cases.
+(This is an experience with similar puzzles.)
+
+<H3>Reference</H3>
+<UL>
+<LI> 
+J. H. Conway: M<SUB>13</SUB>.<BR>
+in R. A. Bailey (ed.): Surveys in Combinatorics, 1997<BR>
+London Math. Soc. Lect. Note Series 241 (1997).
+<LI> 
+G. Butler: Fundamental Algorithms for Permutation Groups.<BR>
+Lect. Notes in Comp. Sci. 559 (1991), Springer-Verlag.
+</UL>
+
+<H5><A HREF="mailto:sebastian_egner(AT)yahoo.com">Sebastian Egner, 1997.</A></H5>
+
+</BODY>
+
+</HTML>
+
