@@ -1,6 +1,6 @@
 # John H. Conway's M13.
 
-In 1987, mathematician [John Horton Conway](https://en.wikipedia.org/wiki/John_Horton_Conway) discovered an algebraic structure that he named [M13](https://en.wikipedia.org/wiki/Mathieu_groupoid M13). It is a lesser cousin of the sporadic finite simple group [M12](https://en.wikipedia.org/wiki/Mathieu_group_M12), discovered by Émile Léonard Mathieu in 1861. Like its cousin, M13 is of considerable symmetric beauty but, Alas!, it wasn't born a group.
+In 1987, mathematician [John Horton Conway](https://en.wikipedia.org/wiki/John_Horton_Conway) discovered an algebraic structure that he named [M13](https://en.wikipedia.org/wiki/Mathieu_groupoid). It is a lesser cousin of the sporadic finite simple group [M12](https://en.wikipedia.org/wiki/Mathieu_group_M12), discovered by Émile Léonard Mathieu in 1861. Like its cousin, M13 is of considerable symmetric beauty but, Alas!, it wasn't born a group.
 
 Nevertheless, John Conway liked to play with M13, and that is how it was introduced: as a game.
 
