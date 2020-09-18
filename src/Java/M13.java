@@ -153,7 +153,7 @@ public class M13 extends Applet implements Runnable {
     // initialize the pseudo-random sequence
     random = new Random(1);
     for (int i = 0; i < 100; ++i)
-      int dummy = random.nextInt();
+      random.nextInt();
   }
 
   // startMove(c) initiates the move which transfers counter c
@@ -412,6 +412,9 @@ public class M13 extends Applet implements Runnable {
 
   // handleEvent()
   //   initiates a move via startMove()
+  //
+  // This way of working with events is deprecated since JDK v1.1,
+  // but apparently it still works.
 
   public boolean handleEvent(Event e) {
     if ((e.target == canvas) && (e.id == Event.MOUSE_DOWN)) {
@@ -420,8 +423,8 @@ public class M13 extends Applet implements Runnable {
         // check if mouse down initiates a move
         for (int k = 0; k < 26; k += 2) {
           int
-            dx = e.x-canvas.location().x - canvas.ticks[k][0],
-            dy = e.y-canvas.location().y - canvas.ticks[k][1];
+            dx = e.x-canvas.getLocation().x - canvas.ticks[k][0],
+            dy = e.y-canvas.getLocation().y - canvas.ticks[k][1];
 
           if (dx*dx + dy*dy <= counterHalfSizeSquared) {
 
