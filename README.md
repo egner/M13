@@ -6,7 +6,7 @@ Nevertheless, John Conway liked to play with M13, and that is how it was introdu
 
 ### The Structure, the Game, and ...
 
-For a description of M13, the structure and the game, [Java_applet_1997/info.html](https://github.com/egner/M13/Java_applet_1997/info.html) is my original description from 1997.
+For a description of M13, the structure and the game, `Java_applet_1997/info.html` is my original description from 1997.
 
 Alternatively, you might like Lieven de Buyn's 2007 description from his [his blog](http://www.neverendingbooks.org/conways-puzzle-m13).
 
