@@ -16,11 +16,11 @@ There is also a short entry in [Wikipedia](https://en.wikipedia.org/wiki/Mathieu
 
 In 1997, during the final days of my graduate studies, M13 was brought to my attention by my thesis supervisor Thomas Beth. At that time, my colleague Markus Püschel and me had studied quite a number of permutation-based games, including Rubik's cube and Sam Loyd's 15-puzzle, and developed algorithms for constructing shorter solutions. And so it came that I quickly created an interactive version of the M13 game where you can click the puzzle pieces to solve it manually, or you watch our solution algorithm do the trick.
 
-The program for constructing the solution algorithm from a com pact mathematical description of the puzzle was written in [GAP](https://en.wikipedia.org/wiki/GAP_\(computer_algebra_system\)), Version 3.4 at the time. GAP is a Computer Algebra system which knows a lot about finite groups, including the [Schreier-Sims algorithm](https://en.wikipedia.org/wiki/Schreier–Sims_algorithm) for computing [Strong Generating Sets](https://en.wikipedia.org/wiki/Strong_generating_set). We then exported the tables constructed in GAP to Java or C syntax. The source code is in `src/GAP3`.
+The program for constructing the solution algorithm from a compact mathematical description of the puzzle was written in [GAP](https://en.wikipedia.org/wiki/GAP_\(computer_algebra_system\)), Version 3.4 at the time. GAP is a Computer Algebra system which knows a lot about finite groups, including the [Schreier-Sims algorithm](https://en.wikipedia.org/wiki/Schreier–Sims_algorithm) for computing [Strong Generating Sets](https://en.wikipedia.org/wiki/Strong_generating_set). We then exported the tables constructed in GAP to Java or C syntax. The source code is in `src/GAP3`.
 
 The interactive game for M13 is written in Java, Version 1.0 at the time, implementing a [Java applet](https://en.wikipedia.org/wiki/Java_applet) to be run in any major web browser. The entire source code is `src/Java/M13.java`, consisting of 1530 lines of (ancient) code. It was a one-line change to port the source from Java 1.0 (January 1996) to a modern version, Java SE 8 (LTS). You can compile it with `java -g M13.java`.
 
-But don't expect any browser to run a Java applet, these days (2020). However, the `appletviewer` stand-alone app, included in your favourite JDK, does. Try this command in the `Java_applet_1997` directory:
+But don't expect any browser to run a Java applet these days (2020). However, the `appletviewer` stand-alone app, included in your favourite JDK, does. Try this command in the `Java_applet_1997` directory:
 
 ```
 appletviewer index.html
