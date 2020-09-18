@@ -1,6 +1,6 @@
 /* M13
    ===
-   
+
    Sebastian Egner (egner@informatik.uni-karlsruhe.de)
    6. August 1997
    in Java v1.0, API v1.0.2
@@ -24,11 +24,11 @@
 
    history of the project
      6.8.97 first version in Java, following my GAP-implementation
-     7.8.97 the solver, produced with AbstractStabChain by 
+     7.8.97 the solver, produced with AbstractStabChain by
             Sebastian Egner and Markus P"uschel
      8.8.97 debugged; solver improved to yield shorter words;
             "the look"
-  
+
    compile this file with
      javac -g M13.java
 */
@@ -46,22 +46,22 @@ public class M13 extends Applet implements Runnable {
 // The widgets
 
   M13Canvas canvas;         // where everything happens
-  Button    scrambleButton; // to scramble the puzzle 
+  Button    scrambleButton; // to scramble the puzzle
   Button    solveButton;    // to solve it
   Button    stopButton;     // to stop solving
-  Button    resetButton;    // to reset it  
+  Button    resetButton;    // to reset it
   Scrollbar speedSlider;    // to control the velocity
-  
+
 // Derived layout constants from canvas
 
-  int counterHalfSizeSquared; 
+  int counterHalfSizeSquared;
     // squared radius of a counter in pixels^2
 
 // Simulation parameters
 
-  long   frameDelay     = 40;  // ms  
+  long   frameDelay     = 40;  // ms
   double velocity       = 1.1; // canvas.totalSize/s
-  double minVelocity    = 0.2; 
+  double minVelocity    = 0.2;
   double maxVelocity    = 2.0;
 
 // State of the simulation
@@ -69,14 +69,14 @@ public class M13 extends Applet implements Runnable {
   boolean initialized = false;
     // Is the applet initialized?
 
-  boolean running = false; 
+  boolean running = false;
     // Is the simulation running now?
 
-  int counterAt[] = new int[26]; 
+  int counterAt[] = new int[26];
     // Which counter (0..12, 12 = hole) is at tick position k?
 
   int trajectory[][] = new int[3][4];
-    // How to move the counters: 
+    // How to move the counters:
     //   trajectory[i][0] is the nr. of a counter,
     //   trajectory[i][1] is its current tick position
     //   trajectory[i][2] is its intermediate tick position
@@ -87,7 +87,7 @@ public class M13 extends Applet implements Runnable {
 
   boolean showMoves = true;        // show the moves or just update position?
   int     nrMoves   = 0,           // nr. of remaining moves to do
-          moves[]   = new int[10]; // the moves 
+          moves[]   = new int[10]; // the moves
 
   Random random; // a pseudo-random sequence
 
@@ -98,14 +98,14 @@ public class M13 extends Applet implements Runnable {
 // Initializing and running the applet
 
   public void init() {
-  
+
     // define the layout of the applet
     setLayout(new BorderLayout());
       canvas = new M13Canvas();
     add("Center", canvas);
       Panel controls = new Panel();
       controls.setLayout(new BorderLayout());
-        speedSlider = 
+        speedSlider =
           new Scrollbar(
             Scrollbar.HORIZONTAL,
             50,
@@ -129,20 +129,20 @@ public class M13 extends Applet implements Runnable {
 
     // initialize canvas
     canvas.init();
-    
+
     // modify the layout of this
     scrambleButton.setFont(canvas.buttonFont);
     solveButton.setFont(canvas.buttonFont);
     stopButton.setFont(canvas.buttonFont);
     resetButton.setFont(canvas.buttonFont);
-    
+
     // precompute derived layout constants
-    counterHalfSizeSquared = 
+    counterHalfSizeSquared =
       (int)Math.round(
         (canvas.counterSize/2.0 * canvas.totalSize) *
         (canvas.counterSize/2.0 * canvas.totalSize)
       );
-      
+
     // initialize state of the simulation
     running = false;
     for (int k = 0; k < 26; ++k)
@@ -155,7 +155,7 @@ public class M13 extends Applet implements Runnable {
     for (int i = 0; i < 100; ++i)
       int dummy = random.nextInt();
   }
-  
+
   // startMove(c) initiates the move which transfers counter c
   //              into the hole. This is done by filling trajectory[].
   // finishMove() finishes the current move by using trajectory[]
@@ -163,7 +163,7 @@ public class M13 extends Applet implements Runnable {
 
   public void startMove(int c) {
 
-    // compute the positions k(c) and k(hole)    
+    // compute the positions k(c) and k(hole)
     int kc = 0;
     while ((kc < 26) && (counterAt[kc] != c))
       kc += 2;
@@ -204,7 +204,7 @@ public class M13 extends Applet implements Runnable {
           kb = k;
       }
     }
-    
+
     // prepare the trajectories of a, b, c
     trajectory[0][0] = counterAt[ka];
     trajectory[0][1] = ka;
@@ -245,9 +245,9 @@ public class M13 extends Applet implements Runnable {
     (new Thread(this)).start();
   }
 
-  public void run() { 
+  public void run() {
     while ((nrMoves > 0) && running) {
-    
+
       // get the next move and set trajectory[]
       if (showMoves)
         showStatus(
@@ -258,7 +258,7 @@ public class M13 extends Applet implements Runnable {
         moves[i] = moves[i+1];
       nrMoves = nrMoves - 1;
 
-    
+
       // show the move
       if (showMoves) {
         double  moveVelocity = velocity;
@@ -280,11 +280,11 @@ public class M13 extends Applet implements Runnable {
           }
         }
       }
-      
+
       // update the counters to the new position
       finishMove();
     }
-    
+
     // set the counters to the final position; repaint
     for (int k = 0; k < 26; k += 2) {
       if (counterAt[k] != 12) {
@@ -293,13 +293,13 @@ public class M13 extends Applet implements Runnable {
       }
     }
     canvas.setCounters(counters);
-    canvas.repaint();    
+    canvas.repaint();
     showStatus("ready");
     stop();
   }
 
   public void stop() {
-    
+
     // clear the moves
     nrMoves = 0;
 
@@ -307,7 +307,7 @@ public class M13 extends Applet implements Runnable {
     counterAt[trajectory[2][1]] = 12;
     for (int i = 0; i < 3; ++i)
       counterAt[trajectory[i][3]] = trajectory[i][0];
-  
+
     // set the counters to the final position; repaint
     for (int k = 0; k < 26; k += 2) {
       if (counterAt[k] != 12) {
@@ -321,15 +321,15 @@ public class M13 extends Applet implements Runnable {
     // unlock the simulation
     running = false;
   }
-  
-  // setCounters(velocity, frame) 
+
+  // setCounters(velocity, frame)
   //   computes the current pixel positions of all counters,
   //   calles canvas.setCounter() with these positions and
   //   returns whether the animation has finished.
   //   The motion has constant velocity.
-  
+
   boolean setCounters(double velocity, int frame) {
-          
+
     // initialize counters
     for (int k = 0; k < 26; k += 2) {
       if (counterAt[k] != 12) {
@@ -339,13 +339,13 @@ public class M13 extends Applet implements Runnable {
     }
 
     // interpolate the moving counters
-    double 
+    double
       T  = frame * (double)frameDelay * 1.0e-3, // absolute time in s
       dT = T * velocity * canvas.totalSize; // absolute distance/pixels
 
-    int finished = 0;    
+    int finished = 0;
     for (int i = 0; i < 3; ++i) {
-      int 
+      int
         c  = trajectory[i][0],    // a counter
 
         k0 = trajectory[i][1],    // initial tick position
@@ -370,24 +370,24 @@ public class M13 extends Applet implements Runnable {
         d = d*d*(3.0 - 2.0*d);
       }
       d = d * (d01 + d12);
-     
+
       // interpolate the position using d
-      int x, y;        
+      int x, y;
       if (d <= d01) {
 
         // somewhere between (x0, y0) and (x1, y1)
-        double 
+        double
           u  = d/d01,
           v  = 1.0 - u;
 
         x = (int)Math.round(u * (double)x1 + v * (double)x0);
         y = (int)Math.round(u * (double)y1 + v * (double)y0);
-          
+
       } else
       if (d <= d01 + d12) {
 
         // somewhere between (x1, y1) and (x2, y2)
-        double 
+        double
           u  = (d - d01)/d12,
           v  = 1.0 - u;
 
@@ -401,7 +401,7 @@ public class M13 extends Applet implements Runnable {
         y = y2;
         ++finished;
       }
-      
+
       // set the position of c to (x, y)
       counters[c][0] = x;
       counters[c][1] = y;
@@ -409,8 +409,8 @@ public class M13 extends Applet implements Runnable {
     canvas.setCounters(counters);
     return (finished == 3);
   }
-  
-  // handleEvent() 
+
+  // handleEvent()
   //   initiates a move via startMove()
 
   public boolean handleEvent(Event e) {
@@ -419,15 +419,15 @@ public class M13 extends Applet implements Runnable {
 
         // check if mouse down initiates a move
         for (int k = 0; k < 26; k += 2) {
-          int 
+          int
             dx = e.x-canvas.location().x - canvas.ticks[k][0],
             dy = e.y-canvas.location().y - canvas.ticks[k][1];
 
           if (dx*dx + dy*dy <= counterHalfSizeSquared) {
-          
+
             // mouse hit near tick nr. k
             if (counterAt[k] != 12) {
-            
+
               // try to start moving the counter at k into the hole
               moves       = new int[1];
               moves[0]    = counterAt[k];
@@ -441,7 +441,7 @@ public class M13 extends Applet implements Runnable {
         }
       }
       return true;
-    } 
+    }
     if ((e.target == scrambleButton) && (e.id == Event.ACTION_EVENT)) {
       requestFocus();
       if (!running) {
@@ -455,7 +455,7 @@ public class M13 extends Applet implements Runnable {
             finishMove();
           }
         }
-        
+
         // set the new positions and repaint
         for (int k = 0; k < 26; k += 2) {
           if (counterAt[k] != 12) {
@@ -471,7 +471,7 @@ public class M13 extends Applet implements Runnable {
     if ((e.target == solveButton) && (e.id == Event.ACTION_EVENT)) {
       requestFocus();
       if (!running) {
-      
+
         // compute a solution
         moves   = solver.solve(counterAt);
         nrMoves = moves.length;
@@ -499,7 +499,7 @@ public class M13 extends Applet implements Runnable {
           counterAt[k] = 12;
         for (int c = 0; c < 12; ++c)
           counterAt[2*(c+1)] = c;
-          
+
         // set the new positions and repaint
         for (int k = 0; k < 26; k += 2) {
           if (counterAt[k] != 12) {
@@ -530,13 +530,13 @@ public class M13 extends Applet implements Runnable {
 */
 
 class M13Canvas extends Canvas {
-  
+
 // Layout parameters
-  
+
   public int    totalSize   = 500;  // total width = total height in pixels
-  public double tickSize    = 0.02; // diameter rel. to totalSize  
+  public double tickSize    = 0.02; // diameter rel. to totalSize
   public double counterSize = 0.08; // diameter rel. to totalSize
- 
+
   Color backgroundColor   = Color.lightGray;
   Color lineColor         = Color.black;
   Color tickColor         = Color.black;
@@ -555,10 +555,10 @@ class M13Canvas extends Canvas {
     new Color(191,   0, 191),
     new Color(238,  17, 127)
   };
-  
+
   Font labelFont    = new Font("Helvetica", Font.PLAIN, 18);
   Font buttonFont   = new Font("Helvetica", Font.PLAIN, 12);
-  Font titleFonts[] = 
+  Font titleFonts[] =
     { new Font("TimesRoman", Font.ITALIC, 50),
       new Font("TimesRoman", Font.PLAIN,  38),
       new Font("Helvetica",  Font.PLAIN,  12)
@@ -566,7 +566,7 @@ class M13Canvas extends Canvas {
 
 // Derived layout constants
 
-  public int ticks[][] = new int[26][2]; 
+  public int ticks[][] = new int[26][2];
     // coordinates of the PG(2,3)-points/lines
     // (point/line alternating, point 0 top, clockwise)
 
@@ -580,14 +580,14 @@ class M13Canvas extends Canvas {
   int counterRadius,   // radius of counter in pixels
       counterDiameter; // diameter of counter in pixels
 
-  int labelDisplacement[][] = new int[3][2]; 
+  int labelDisplacement[][] = new int[3][2];
     // displacement to center labels
 
   int titlePositions[][] = new int[3][2];
     // positions of the title strings
- 
+
 // Double buffering facilities
- 
+
   Image    bufferImage = null; // off-screen buffer
   Graphics bufferGraphics;     // bufferImage.getGraphics()
 
@@ -601,16 +601,16 @@ class M13Canvas extends Canvas {
   }
 
   public void init() {
-  
+
     // allocate double buffer
     bufferImage    = createImage(totalSize, totalSize);
     bufferGraphics = bufferImage.getGraphics();
-    
+
     // precompute derived layout constants
     ticks    = new int[26][2];
     ticksDir = new double[26][2];
     for (int k = 0; k < 26; ++k) {
-      double 
+      double
         c0 = 0.5 * (double) totalSize,
         c1 = 0.5 * (double) totalSize * 0.89,
         a0 = 2.0*Math.PI/26.0;
@@ -620,17 +620,17 @@ class M13Canvas extends Canvas {
 
       ticks[k][0] = (int)Math.round(c0 + c1*ticksDir[k][0]);
       ticks[k][1] = (int)Math.round(c0 + c1*ticksDir[k][1]);
-    }    
-    
+    }
+
     tickPointRadius   = (int)Math.round(tickSize * totalSize / 2.0);
     tickPointDiameter = (int)Math.round(tickSize * totalSize);
     tickLineLength    = (int)Math.round(tickSize * totalSize);
-    
+
     counterRadius   = (int)Math.round(counterSize * totalSize / 2.0);
     counterDiameter = (int)Math.round(counterSize * totalSize);
 
-    // displacements for the labels   
-    { 
+    // displacements for the labels
+    {
       bufferGraphics.setFont(labelFont);
       FontMetrics fm = bufferGraphics.getFontMetrics();
       int         w  = fm.charWidth('0'),
@@ -646,14 +646,14 @@ class M13Canvas extends Canvas {
 
       /* label of length 2 */
       labelDisplacement[2][0] = -w;
-      labelDisplacement[2][1] = +h/2;      
+      labelDisplacement[2][1] = +h/2;
     }
 
     // displacements for the title
     {
       bufferGraphics.setFont(titleFonts[0]);
       FontMetrics fm1 = bufferGraphics.getFontMetrics();
-      int 
+      int
         w1 = fm1.stringWidth("M"),
         h1 = fm1.getAscent();
       bufferGraphics.setFont(titleFonts[1]);
@@ -661,7 +661,7 @@ class M13Canvas extends Canvas {
       int
         w2 = fm2.stringWidth("13"),
         h2 = fm2.getAscent();
-      int 
+      int
         w = w1 + w2,
         h = h1 + (h1*25)/100;
 
@@ -679,7 +679,7 @@ class M13Canvas extends Canvas {
       titlePositions[2][0] = totalSize - (w3*105)/100;
       titlePositions[2][1] = totalSize - (h3*105)/100;
     }
-    
+
     // initialize state variables
     for (int c = 0; c < 12; ++c) {
       counters[c][0] = ticks[2*(c+1)][0];
@@ -688,16 +688,16 @@ class M13Canvas extends Canvas {
   }
 
 // (Re)drawing the canvas
- 
+
   public void update(Graphics screen) {
 
     // do *not* clear the screen and paint from scratch
     paint(screen);
   }
- 
+
   public void paint(Graphics screen) {
     Graphics g = bufferGraphics; // abbreviation
-  
+
     // clear buffer
     g.setColor(backgroundColor);
     g.fillRect(0, 0, totalSize, totalSize);
@@ -710,8 +710,8 @@ class M13Canvas extends Canvas {
     g.drawString("13", titlePositions[1][0], titlePositions[1][1]);
     g.setFont(titleFonts[2]);
     g.drawString(
-      "by Sebastian Egner, 1997", 
-      titlePositions[2][0], 
+      "by Sebastian Egner, 1997",
+      titlePositions[2][0],
       titlePositions[2][1]
     );
 
@@ -721,27 +721,27 @@ class M13Canvas extends Canvas {
 
       // join k to k+1, +5, +17, +25
       g.drawLine(
-        ticks[k][0], 
+        ticks[k][0],
         ticks[k][1],
-        ticks[(k + 1)%26][0], 
+        ticks[(k + 1)%26][0],
         ticks[(k + 1)%26][1]
       );
       g.drawLine(
-        ticks[k][0], 
+        ticks[k][0],
         ticks[k][1],
-        ticks[(k + 5)%26][0], 
+        ticks[(k + 5)%26][0],
         ticks[(k + 5)%26][1]
       );
       g.drawLine(
-        ticks[k][0], 
+        ticks[k][0],
         ticks[k][1],
-        ticks[(k + 17)%26][0], 
+        ticks[(k + 17)%26][0],
         ticks[(k + 17)%26][1]
       );
       g.drawLine(
-        ticks[k][0], 
+        ticks[k][0],
         ticks[k][1],
-        ticks[(k + 25)%26][0], 
+        ticks[(k + 25)%26][0],
         ticks[(k + 25)%26][1]
       );
     }
@@ -758,30 +758,30 @@ class M13Canvas extends Canvas {
           tickPointDiameter,
           tickPointDiameter
         );
-        
+
       } else {
 
         // draw tick as line
-        int 
+        int
           dx = (int)Math.round(tickLineLength * ticksDir[k][0]),
           dy = (int)Math.round(tickLineLength * ticksDir[k][1]);
-          
+
         g.drawLine(
           ticks[k][0] - dx,
           ticks[k][1] - dy,
           ticks[k][0] + dx,
           ticks[k][1] + dy
         );
-        
+
       }
     }
 
     // draw counters
     char label[] = new char[2];
     for (int c = 0; c < 12; ++c) {
-      
+
       // the counter disk
-      g.setColor(counterColor[c]);      
+      g.setColor(counterColor[c]);
       g.fillOval(
         counters[c][0] - counterRadius,
         counters[c][1] - counterRadius,
@@ -795,17 +795,17 @@ class M13Canvas extends Canvas {
         counterDiameter,
         counterDiameter
       );
-      
+
       // the label
       g.setColor(counterLabelColor);
       g.setFont(labelFont); // ...
       if (c+1 < 10) {
-      
+
         // one-digit label
         label[0] = Character.forDigit(c+1, 10);
         g.drawChars(
           label,
-          0, 
+          0,
           1,
           counters[c][0] + labelDisplacement[1][0],
           counters[c][1] + labelDisplacement[1][1]
@@ -817,7 +817,7 @@ class M13Canvas extends Canvas {
         label[1] = Character.forDigit(c+1-10, 10);
         g.drawChars(
           label,
-          0, 
+          0,
           2,
           counters[c][0] + labelDisplacement[2][0],
           counters[c][1] + labelDisplacement[2][1]
@@ -828,7 +828,7 @@ class M13Canvas extends Canvas {
     // map buffer to screen
     screen.drawImage(bufferImage, 0, 0, this);
   }
-  
+
 // Setting the positions of the counters
 
   public void setCounters(int counters[][]) {
@@ -840,14 +840,14 @@ class M13Canvas extends Canvas {
 }
 
 /* M13Solver
-     a class which provides the solution algorithm for the 
+     a class which provides the solution algorithm for the
      monoid M_13 in terms of moving the counters. Encodings:
-     
+
      counter:  {0..11} are the counters labeled (1)..(12).
                In addition, the counter 12 is the hole.
      tick:     {0..25} are the tick positions such that
-               0 is the "point"-tick on top and counting 
-               is clockwise; "point"-ticks and "line"-ticks 
+               0 is the "point"-tick on top and counting
+               is clockwise; "point"-ticks and "line"-ticks
                alternate
      state:    an array int state[26] which maps positions
                into counters (incl. hole), {0..12}.
@@ -896,7 +896,7 @@ class M13Solver extends Object {
 // int generators[][];
 //   /* The permutations which are the generators. The
 //      generators g are numbered [1..nrGenerators].
-//      (To allow inverse powers in the words!) 
+//      (To allow inverse powers in the words!)
 //      Generator g maps the point p to the point
 //        generators[g-1][p].
 //   */
@@ -911,7 +911,7 @@ class M13Solver extends Object {
 //      all points basepoints[0], .., basepoints[level-1]
 //      and maps basepoints[level] into the image point im.
 //      The permutation transversals[level][im] has been
-//      factored into the word 
+//      factored into the word
 //        words[level][im].
 //      The word is a 0-terminated list of the generators g
 //      or the inverse generators -g which form the word
@@ -1130,13 +1130,13 @@ int words[][][] =
     }
   };
 
-  // factorPerm() finds a word in the abstract generators which 
+  // factorPerm() finds a word in the abstract generators which
   //              represents perm.
 
   public VectorInt factorPerm(int perm[]) {
 
     // x = copy(perm); allocate buffer x1, x2
-    int 
+    int
       x[]  = new int[nrPoints],
       x1[] = new int[nrPoints],
       x2[] = new int[nrPoints];
@@ -1149,21 +1149,21 @@ int words[][][] =
     //     x t1^-1 .. tN^-1 = id and
     //     w w1^-1 .. wN^-1 = id  ==>  w = wN .. w1.
     //
-    VectorInt w = new VectorInt(); 
+    VectorInt w = new VectorInt();
     for (int level = 0; level < nrBasepoints; ++level) {
-    
+
       // fetch the basepoint image and transversal element
       int im   = x[ basepoints[level] ];  // basepoint image
       int t[]  = transversals[level][im]; // takes basepoint to im
       int wt[] = words[level][im];        // the word for t
-      
+
       // check if im is in the orbit at all
       if (t[0] == -1) {
 
         // x is not in the group
         return new VectorInt();
       }
-      
+
       // compute x := x * t^-1; w := wt * w;
       for (int i = 0; i < nrPoints; ++i)
         x1[i] = x[i];
@@ -1173,7 +1173,7 @@ int words[][][] =
         x[i] = x2[ x1[i] ];
       w.prepend(wt);
     }
-    
+
     // check x = 0
     for (int i = 0; i < nrPoints; ++i)
       if (x[i] != i)
@@ -1185,7 +1185,7 @@ int words[][][] =
   public int[] mapWord(VectorInt word) {
 
     // perm := id; allocate buffers perm1, perm2
-    int 
+    int
       perm[]  = new int[nrPoints],
       perm1[] = new int[nrPoints],
       perm2[] = new int[nrPoints];
@@ -1229,24 +1229,24 @@ int words[][][] =
 */
 
 int triangleMoves[][] =
-  { { 1,  2, 0 }, { 1,  3, 0 }, {  1,  4, 0 }, {  1,  6, 0 }, { 1,  7, 0 }, 
-    { 1,  8, 0 }, { 1,  9, 0 }, {  1, 10, 0 }, {  1, 12, 0 }, { 2,  4, 0 }, 
-    { 2,  5, 0 }, { 2,  6, 0 }, {  2,  8, 0 }, {  2,  9, 0 }, { 2, 10, 0 }, 
-    { 2, 11, 0 }, { 2, 12, 0 }, {  3,  4, 0 }, {  3,  5, 0 }, { 3,  6, 0 }, 
-    { 3,  8, 0 }, { 3,  9, 0 }, {  3, 10, 0 }, {  3, 11, 0 }, { 3, 12, 0 }, 
-    { 4,  5, 0 }, { 4,  6, 0 }, {  4,  7, 0 }, {  4,  8, 0 }, { 4,  9, 0 }, 
-    { 4, 11, 0 }, { 5,  6, 0 }, {  5,  7, 0 }, {  5,  8, 0 }, { 5,  9, 0 }, 
-    { 5, 10, 0 }, { 5, 12, 0 }, {  6,  7, 0 }, {  6, 10, 0 }, { 6, 11, 0 }, 
-    { 6, 12, 0 }, { 7,  8, 0 }, {  7,  9, 0 }, {  7, 10, 0 }, { 7, 11, 0 }, 
-    { 7, 12, 0 }, { 8, 10, 0 }, {  8, 11, 0 }, {  8, 12, 0 }, { 9, 10, 0 }, 
-    { 9, 11, 0 }, { 9, 12, 0 }, { 10, 11, 0 }, { 11, 12, 0 } 
+  { { 1,  2, 0 }, { 1,  3, 0 }, {  1,  4, 0 }, {  1,  6, 0 }, { 1,  7, 0 },
+    { 1,  8, 0 }, { 1,  9, 0 }, {  1, 10, 0 }, {  1, 12, 0 }, { 2,  4, 0 },
+    { 2,  5, 0 }, { 2,  6, 0 }, {  2,  8, 0 }, {  2,  9, 0 }, { 2, 10, 0 },
+    { 2, 11, 0 }, { 2, 12, 0 }, {  3,  4, 0 }, {  3,  5, 0 }, { 3,  6, 0 },
+    { 3,  8, 0 }, { 3,  9, 0 }, {  3, 10, 0 }, {  3, 11, 0 }, { 3, 12, 0 },
+    { 4,  5, 0 }, { 4,  6, 0 }, {  4,  7, 0 }, {  4,  8, 0 }, { 4,  9, 0 },
+    { 4, 11, 0 }, { 5,  6, 0 }, {  5,  7, 0 }, {  5,  8, 0 }, { 5,  9, 0 },
+    { 5, 10, 0 }, { 5, 12, 0 }, {  6,  7, 0 }, {  6, 10, 0 }, { 6, 11, 0 },
+    { 6, 12, 0 }, { 7,  8, 0 }, {  7,  9, 0 }, {  7, 10, 0 }, { 7, 11, 0 },
+    { 7, 12, 0 }, { 8, 10, 0 }, {  8, 11, 0 }, {  8, 12, 0 }, { 9, 10, 0 },
+    { 9, 11, 0 }, { 9, 12, 0 }, { 10, 11, 0 }, { 11, 12, 0 }
   };
 
   // move()  simulates the move c by modifying counterAt
 
   public void move(int counterAt[], int c) {
 
-    // compute the positions k(c) and k(hole)    
+    // compute the positions k(c) and k(hole)
     int kc = 0;
     while ((kc < 26) && (counterAt[kc] != c))
       kc += 2;
@@ -1289,7 +1289,7 @@ int triangleMoves[][] =
     }
 
     // return the move counterAt-array
-    int 
+    int
       a = counterAt[ka],
       b = counterAt[kb];
     counterAt[kHole] = c;
@@ -1304,7 +1304,7 @@ int triangleMoves[][] =
   // solveDirectly()  solves the puzzle by factoring in M12
 
   public int[] solve(int counterAt[]) {
-  
+
     // use solveDirectly()
     VectorInt wBest = solveInVincinity(counterAt, new VectorInt());
 
@@ -1316,24 +1316,24 @@ int triangleMoves[][] =
     }
 
     // try a two moves
-    for (int c0 = 0; c0 < 12; ++c0) 
+    for (int c0 = 0; c0 < 12; ++c0)
       for (int c1 = 0; c1 < 12; ++c1) {
         VectorInt w = solveInVincinity(counterAt, new VectorInt(c0, c1));
         if (w.length < wBest.length)
           wBest = w;
       }
-    
+
     wBest.trim();
     return wBest.elements;
   }
-  
+
   public VectorInt solveInVincinity(int counterAt[], VectorInt w) {
-  
+
     // state := copy(counterAt)
     int state[] = new int[26];
     for (int i = 0; i < 26; ++i)
       state[i] = counterAt[i];
-    
+
     // do the moves in w
     for (int i = 0; i < w.length; ++i)
       move(state, w.elements[i]);
@@ -1345,7 +1345,7 @@ int triangleMoves[][] =
         --w.length;
       else
         w.append(w1[i]);
-    
+
     return w;
   }
 
@@ -1365,13 +1365,13 @@ int triangleMoves[][] =
       move(state, holeToTop);
       m.append(holeToTop);
     }
- 
+
     // get the remaining permutation of the positions:
     //   Whatever is at tick 2*k should be brought to 2*perm[k].
     int perm[] = new int[13];
     for (int i = 0; i < 13; ++i)
       perm[i] = i;
-    for (int c = 1; c < 13; ++c) 
+    for (int c = 1; c < 13; ++c)
       perm[c] = state[2*c] + 1;
 
     // factor the permutation into a word in the triangle moves
@@ -1390,7 +1390,7 @@ int triangleMoves[][] =
     //      the saving in word length is only abount 1/6 * 1/3 = 6%.
     //   5. Note that the generators are counted from 1, 2, 3..
     //      and *not* as 0, 1, 2..
-    
+
     for (int k = 0; k < w.length; ++k) {
       int g = w.elements[k];
       if (g > 0) {
@@ -1407,12 +1407,12 @@ int triangleMoves[][] =
     m.trim();
     return m.elements;
   }
-  
-  void addTriangleMove(int state[], VectorInt m, int x) {  
+
+  void addTriangleMove(int state[], VectorInt m, int x) {
     int c = state[ 2*x ];
     if (c != 12) {
       move(state, c);
-      
+
       // cancel out "x x" if possible
       if ((m.length > 0) && (c == m.elements[m.length-1]))
         --m.length;
@@ -1423,7 +1423,7 @@ int triangleMoves[][] =
 }
 
 /* VectorInt
-     a class the objects of which represent lists of (int)s 
+     a class the objects of which represent lists of (int)s
      of variable length.
 */
 
@@ -1453,44 +1453,44 @@ class VectorInt extends Object {
   }
 
   // grow() increases this to provide at least minLength elements.
-  
+
   void grow(int minLength) {
     if (minLength <= elements.length)
       return;
-    
+
     // grow by at least 10%
-    int newLength = elements.length + elements.length/10 + 1;        
+    int newLength = elements.length + elements.length/10 + 1;
     if (minLength > newLength)
       newLength = minLength;
 
-    // reallocate 
+    // reallocate
     int elts[] = elements;
     elements   = new int[newLength];
     for (int i = 0; i < length; ++i)
-      elements[i] = elts[i];      
+      elements[i] = elts[i];
   }
 
   // append() appends a single/array/VectorInt element(s)
-  
+
   public void append(int elt) {
     grow(length + 1);
     elements[length++] = elt;
   }
-  
+
   public void append(int elts[]) {
     grow(length + elts.length);
     for (int i = 0; i < elts.length; ++i)
       elements[length++] = elts[i];
   }
-  
+
   public void append(VectorInt elts) {
     grow(length + elts.length);
     for (int i = 0; i < elts.length; ++i)
       elements[length++] = elts.elements[i];
   }
-  
-  // prepend() prepends int/array/VectorInt 
-  
+
+  // prepend() prepends int/array/VectorInt
+
   public void prepend(int elt) {
     grow(length + 1);
     for (int i = length-1; i >= 0; --i)
@@ -1498,7 +1498,7 @@ class VectorInt extends Object {
     elements[0] = elt;
     length += 1;
   }
-  
+
   public void prepend(int elts[]) {
     grow(length + elts.length);
     for (int i = length-1; i >= 0; --i)
@@ -1516,13 +1516,13 @@ class VectorInt extends Object {
       elements[i] = elts.elements[i];
     length += elts.length;
   }
-  
-  // trim()  shortens elements to length 
-  
+
+  // trim()  shortens elements to length
+
   public void trim() {
     if (elements.length == length)
       return;
-      
+
     int elts[] = new int[length];
     for (int i = 0; i < length; ++i)
       elts[i] = elements[i];
